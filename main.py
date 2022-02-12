@@ -1,6 +1,6 @@
 import pandas as pd
 from read_files import read_data
-import statistics as stat
+from scipy import stats
 
 data: pd.Series = read_data()
 summary = dict()
@@ -17,5 +17,9 @@ summary["avg"] = avg_acc
 summary["median"] = median_acc
 summary["std"] = std_acc
 
+zscores = stats.zscore(data)
+outliers = data[zscores[abs(zscores) > 3].index]
+
+print("Outliers are: ", outliers)
 
 

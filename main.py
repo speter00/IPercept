@@ -1,8 +1,12 @@
 import pandas as pd
 from read_files import read_data
-from scipy import stats
+import utilities as ut
 
-data: pd.Series = read_data()
+data: pd.Series = read_data()  
+data = ut.interpolate_outliers(data)
+
+
+
 summary = dict()
 
 min_acc = data.min()
@@ -17,9 +21,5 @@ summary["avg"] = avg_acc
 summary["median"] = median_acc
 summary["std"] = std_acc
 
-zscores = stats.zscore(data)
-outliers = data[zscores[abs(zscores) > 3].index]
-
-print("Outliers are: ", outliers)
 
 

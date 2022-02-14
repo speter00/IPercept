@@ -6,6 +6,7 @@ import utilities as ut
 from matplotlib import pyplot as plt
 
 from scipy.signal import savgol_filter
+from FFT import plot_fft
 
 import numpy as np
 
@@ -19,36 +20,13 @@ data[:] = savgol_filter(data, 55, 3)
 
 peaks = ut.peak_finder(data)
 
-
-
-
-
+plot_fft(
+    data)  # plotting the FFT of the time series, note: data covers roughly 260 minutes, plotting with 10 minute units
 
 # condense the series into data points for every 10 minutes
 # in order to make the plot later clearer and more easily understandable
 
 condensed_series = data.groupby(pd.Grouper(freq='10Min')).aggregate(np.mean)
-
-
-
-data_index_range = list(range(len(data.index)))
-data_fft = abs(np.fft.fft(data))
-
-# get the list of frequencies
-num = np.size(data_index_range)
-freq = [i / num for i in list(range(num))]
-
-# get the list of spectrums
-spectrum=data_fft.real*data_fft.real+data_fft.imag*data_fft.imag
-nspectrum=spectrum/spectrum[0]
-
-
-results = pd.DataFrame({'freq': freq, 'nspectrum': nspectrum})
-results['period'] = results['freq'] * 26
-results['period_round'] = results['period'].round()
-grouped_10mins = results.groupby('period_round')['nspectrum'].mean()
-plt.semilogy(grouped_10mins.index, grouped_10mins)
-plt.savefig("fft_acceleration_10min.png")
 
 summary = dict()
 
@@ -64,7 +42,7 @@ summary["avg"] = avg_acc
 summary["median"] = median_acc
 summary["std"] = std_acc
 
-plt.figure(figsize=(20,20))
+plt.figure(figsize=(20, 20))
 plt.plot(condensed_series)
 
 # You can see some interestings bits of information here, such as:
@@ -75,6 +53,4 @@ plt.plot(condensed_series)
 # there was another peak at around 11:00
 
 plt.savefig("acceleration_10min_average.png")
-
-
-
+pd.DataFrame(data=summary, index=[0]).to_excel("report.xlsx")

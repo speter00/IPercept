@@ -1,5 +1,5 @@
 import pandas as pd
-import stumpy as stumpy
+from scipy.signal import argrelextrema
 
 from read_files import read_data
 import utilities as ut
@@ -18,8 +18,6 @@ data = ut.interpolate_outliers(data)
 
 data[:] = savgol_filter(data, 55, 3)
 
-peaks = ut.peak_finder(data)
-
 plot_fft(
     data)  # plotting the FFT of the time series, note: data covers roughly 260 minutes, plotting with 10 minute units
 
@@ -27,6 +25,12 @@ plot_fft(
 # in order to make the plot later clearer and more easily understandable
 
 condensed_series = data.groupby(pd.Grouper(freq='10Min')).aggregate(np.mean)
+
+
+peaks = condensed_series[argrelextrema(condensed_series.values, np.greater)[0]]
+# Note: these peaks are also clearly visible on the acceleration_10min plot later
+
+peaks.to_excel("peaks.xlsx") # saving to Excel
 
 summary = dict()
 

@@ -9,6 +9,7 @@ from scipy.signal import savgol_filter
 from FFT import plot_fft
 
 import numpy as np
+from predict import train_model, test_plot
 
 data: pd.Series = read_data()
 data = ut.interpolate_outliers(data)
@@ -34,6 +35,13 @@ condensed_series = data.groupby(pd.Grouper(freq='5Min')).aggregate(np.mean) # fo
 
 condensed_series_1s = data.groupby(pd.Grouper(freq='1s')).aggregate(np.mean) # for finding repeating patterns
 
+condensed_series_100ms = data.groupby(pd.Grouper(freq='0.1S')).aggregate(np.mean)
+
+
+# function call for training a model: don't call unless you want to re-train
+# train_model(condensed_series_100ms)
+
+test_plot()  # plotting predicted acceleration values together with the real ones, to visualize performance of model
 
 # function call below is commented out, because it takes considerable time for it to run; if you wish to run it,
 # feel free to remove the comment; the results are in the mfigure files

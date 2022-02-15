@@ -8,6 +8,7 @@ import pickle
 def train_model(data: pd.Series):
     '''
     Function for training a model that predicts future acceleration values based on past values.
+
     :param data: The input time series of acceleration values.
     '''
     target_values = []

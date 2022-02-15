@@ -1,7 +1,12 @@
 import pandas as pd
 
 
-def read_data():
+def read_data() -> pd.Series:
+    '''
+    Function for reading all the data from the csv files into a series. Missing values are also interpolated.
+
+    :return: Time series merged from the csv files.
+    '''
     # it's best to use the date-time column as an index column
 
     data1 = pd.read_csv("test_files/spacedata1.csv", index_col=0, header=None).squeeze("columns")

@@ -7,6 +7,7 @@ def plot_fft(data: pd.Series, interval=5):
     Plot the Fast Fourier Transformed version of the input data.
     It's a slightly modified version of this code:
     https://towardsdatascience.com/fourier-transform-for-time-series-292eb887b101
+
     :param data: The input time series.
     :param interval: Plotting with this many units (in minutes).
     """

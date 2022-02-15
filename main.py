@@ -58,7 +58,7 @@ test_plot()  # plotting predicted acceleration values together with the real one
 
 
 peaks = condensed_series[argrelextrema(condensed_series.values, np.greater)[0]]
-# Note: these peaks are also clearly visible on the acceleration_10min plot later
+# Note: these peaks are also clearly visible on the acceleration_5min plot later
 
 peaks.to_excel("peaks.xlsx") # saving to Excel
 

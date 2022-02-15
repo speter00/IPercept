@@ -8,7 +8,7 @@ def interpolate_outliers(data: pd.Series) -> pd.Series:
     """
     Interpolate outlier values in the data.
 
-    :param data: The input data.
+    :param data: The input data to interpolate.
     :return: Data with interpolated values.
     """
 
@@ -22,6 +22,11 @@ def interpolate_outliers(data: pd.Series) -> pd.Series:
 
 
 def matrix_profiler(data: pd.Series):
+    '''
+    Make a matrix profile from the data in order to find repeating patterns.
+
+    :param data: The time series to analyze.
+    '''
     mprofile, figures = mp.analyze(data.values)
     for i in range(len(figures)):
         figures[i].savefig(f"mfigure_{i}.png")

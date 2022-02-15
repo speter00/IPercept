@@ -21,7 +21,9 @@ data[:] = savgol_filter(data, 55, 3)
 
 
 plot_fft(
-    data)  # plotting the FFT of the time series, note: data covers roughly 260 minutes, plotting with 10 minute units
+data, interval=2)  # plotting the FFT of the time series with custom intervals (in minutes)
+# Note: higher intervals tend to give smoother graphs, but lower numbers can give a more accurate picture
+# I personally found 2 minutes and 5 minutes to work decently well, but fine tuning and experimenting is very much needed
 
 
 condensed_series = data.groupby(pd.Grouper(freq='5Min')).aggregate(np.mean) # for finding peaks and ploting

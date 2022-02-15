@@ -2,12 +2,13 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 
-def plot_fft(data: pd.Series):
+def plot_fft(data: pd.Series, interval=5):
     """
-    Plot the Fast Fourier Transformed version of the input data. Plotting with 10 minute units.
+    Plot the Fast Fourier Transformed version of the input data.
     It's a slightly modified version of this code:
     https://towardsdatascience.com/fourier-transform-for-time-series-292eb887b101
     :param data: The input time series.
+    :param interval: Plotting with this many units (in minutes).
     """
 
     data_index_range = list(range(len(data.index)))
@@ -22,8 +23,8 @@ def plot_fft(data: pd.Series):
     nspectrum = spectrum / spectrum[0]
 
     results = pd.DataFrame({'freq': freq, 'nspectrum': nspectrum})
-    results['period'] = results['freq'] * 26  # the data covers approx. 260 minutes in total, and the units are 10 minutes
+    results['period'] = results['freq'] * (260 / interval)  # the data covers approx. 260 minutes in total,
     results['period_round'] = results['period'].round()
-    grouped_10mins = results.groupby('period_round')['nspectrum'].sum()
-    plt.semilogy(grouped_10mins.index, grouped_10mins)
-    plt.savefig("fft_acceleration_10min.png")
+    grouped = results.groupby('period_round')['nspectrum'].mean()
+    plt.semilogy(grouped.index, grouped)
+    plt.savefig(f"fft_acceleration_{interval}min.png")

@@ -1,8 +1,8 @@
-from typing import List, Tuple
+import matrixprofile as mp
 
 import pandas as pd
 from scipy import stats
-import numpy as np
+
 
 def interpolate_outliers(data: pd.Series) -> pd.Series:
     """
@@ -17,3 +17,11 @@ def interpolate_outliers(data: pd.Series) -> pd.Series:
     zscores = stats.zscore(data)
     outliers = data[zscores[abs(zscores) > 3].index]  # both negative and positive outliers matter (thus the abs)
     return data.mask(data.isin(outliers)).interpolate(method="time")
+
+
+
+
+def matrix_profiler(data: pd.Series):
+    mprofile, figures = mp.analyze(data.values)
+    for i in range(len(figures)):
+        figures[i].savefig(f"mfigure_{i}.png")
